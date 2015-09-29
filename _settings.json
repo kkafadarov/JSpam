@@ -1,0 +1,6 @@
+{
+  "DEBUG": false,
+  "port": 6789,
+  "openJubUrl": "http://localhost",
+  "openJubPort": 6969
+}
