@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCHMOOGLE SCHMOME - Final Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Bangers&family=Nunito:wght@400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a1a1a 100%);
+            color: #00ff88;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Animated cheese background */
+        .cheese-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.1;
+        }
+        
+        .cheese-float {
+            position: absolute;
+            font-size: 3rem;
+            animation: floatCheese 15s infinite linear;
+        }
+        
+        @keyframes floatCheese {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Glowing border effect */
+        .glow-border {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 4px solid #00ff88;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: inset 0 0 50px rgba(0, 255, 136, 0.3);
+            animation: borderPulse 2s infinite;
+        }
+        
+        @keyframes borderPulse {
+            0%, 100% { border-color: #00ff88; box-shadow: inset 0 0 50px rgba(0, 255, 136, 0.3); }
+            50% { border-color: #ffcc00; box-shadow: inset 0 0 50px rgba(255, 204, 0, 0.3); }
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 1.5vh 2vw;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .header h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 4.5vh;
+            color: #ffcc00;
+            text-shadow: 0 0 20px #ffcc00, 0 0 40px #ff6600, 3px 3px 0 #ff0066;
+            letter-spacing: 0.5vw;
+            animation: titleGlow 1.5s infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 20px #ffcc00, 0 0 40px #ff6600, 3px 3px 0 #ff0066; }
+            to { text-shadow: 0 0 30px #ffcc00, 0 0 60px #ff6600, 3px 3px 0 #ff0066, 0 0 80px #ffcc00; }
+        }
+        
+        .subtitle {
+            font-size: 1.8vh;
+            color: #ff6688;
+            margin-top: 0.5vh;
+            font-style: italic;
+        }
+        
+        /* Main content */
+        .main-content {
+            display: flex;
+            height: calc(100vh - 12vh);
+            padding: 1vh 2vw 2vh 2vw;
+            gap: 2vw;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Left panel - Instructions */
+        .instructions-panel {
+            flex: 1;
+            background: rgba(10, 25, 45, 0.9);
+            border: 3px solid #00ff88;
+            border-radius: 20px;
+            padding: 2vh 2vw;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .instructions-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(0, 255, 136, 0.1) 50%, transparent 60%);
+            animation: shimmer 3s infinite linear;
+        }
+        
+        @keyframes shimmer {
+            from { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
+        }
+        
+        .panel-title {
+            font-family: 'Bangers', cursive;
+            font-size: 3.5vh;
+            color: #ffcc00;
+            text-align: center;
+            margin-bottom: 2vh;
+            text-shadow: 2px 2px 0 #ff0066;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .challenge {
+            background: rgba(0, 40, 60, 0.85);
+            border-left: 5px solid #ffcc00;
+            padding: 1.5vh 1.5vw;
+            margin-bottom: 1.5vh;
+            border-radius: 0 10px 10px 0;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .challenge:hover {
+            transform: translateX(10px);
+            background: rgba(0, 60, 80, 0.9);
+        }
+        
+        .challenge-number {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5vh;
+            color: #ff6600;
+            display: inline-block;
+            margin-right: 1vw;
+        }
+        
+        .challenge-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.4vh;
+            color: #ffffff;
+            font-weight: 800;
+            margin-bottom: 0.5vh;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .challenge-desc {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.7vh;
+            color: #e0e8f0;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+        
+        .challenge-desc strong {
+            color: #ffdd44;
+            font-weight: 800;
+        }
+        
+        .challenge-icon {
+            font-size: 3vh;
+            float: right;
+            margin-left: 1vw;
+        }
+        
+        /* Right panel - Timer */
+        .timer-panel {
+            flex: 1;
+            background: rgba(0, 20, 40, 0.8);
+            border: 3px solid #00ff88;
+            border-radius: 20px;
+            padding: 2vh 2vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .schmoogle-face {
+            font-size: 8vh;
+            text-align: center;
+            filter: drop-shadow(0 0 20px rgba(255, 204, 0, 0.5));
+            transition: all 0.5s ease;
+        }
+        
+        .timer-display {
+            font-size: 12vh;
+            font-weight: 900;
+            text-align: center;
+            color: #00ff88;
+            text-shadow: 0 0 30px #00ff88, 0 0 60px #00ff88;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .timer-display.warning {
+            color: #ffcc00;
+            text-shadow: 0 0 30px #ffcc00, 0 0 60px #ffcc00;
+            animation: timerPulse 0.5s infinite;
+        }
+        
+        .timer-display.danger {
+            color: #ff3366;
+            text-shadow: 0 0 30px #ff3366, 0 0 60px #ff3366;
+            animation: timerPulse 0.25s infinite;
+        }
+        
+        .timer-display.overtime {
+            color: #ff0066;
+            text-shadow: 0 0 40px #ff0066, 0 0 80px #ff0066;
+            animation: overtimePulse 0.3s infinite;
+        }
+        
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes overtimePulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .message-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ffcc00;
+            border-radius: 15px;
+            padding: 2vh 1.5vw;
+            text-align: center;
+            min-height: 12vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .message-text {
+            font-size: 2vh;
+            color: #ffcc00;
+            font-style: italic;
+            line-height: 1.4;
+        }
+        
+        .start-btn {
+            font-family: 'Bangers', cursive;
+            font-size: 4vh;
+            padding: 2vh 4vw;
+            background: linear-gradient(180deg, #00ff88 0%, #00aa55 100%);
+            color: #000;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.3);
+            box-shadow: 0 6px 0 #006633, 0 10px 20px rgba(0, 255, 136, 0.4);
+            transition: all 0.1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #006633, 0 15px 30px rgba(0, 255, 136, 0.5);
+        }
+        
+        .start-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #006633, 0 5px 10px rgba(0, 255, 136, 0.3);
+        }
+        
+        .start-btn.running {
+            background: linear-gradient(180deg, #ffcc00 0%, #ff9900 100%);
+            box-shadow: 0 6px 0 #cc6600, 0 10px 20px rgba(255, 204, 0, 0.4);
+        }
+        
+        /* Alarm overlay */
+        .alarm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 50, 0.3);
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+        
+        .alarm-overlay.active {
+            animation: alarmFlash 0.5s infinite;
+        }
+        
+        @keyframes alarmFlash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.4; }
+        }
+        
+        /* Cheese rain for overtime */
+        .cheese-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 45;
+            display: none;
+        }
+        
+        .cheese-rain.active {
+            display: block;
+        }
+        
+        .falling-cheese {
+            position: absolute;
+            font-size: 4vh;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(720deg); }
+        }
+        
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 0.5vh;
+            font-size: 1.2vh;
+            color: #446655;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-border"></div>
+    
+    <div class="cheese-bg" id="cheeseBg"></div>
+    <div class="cheese-rain" id="cheeseRain"></div>
+    <div class="alarm-overlay" id="alarmOverlay"></div>
+    
+    <div class="header">
+        <h1>🧀 SCHMOOGLE SCHMOME 🧀</h1>
+        <div class="subtitle">"I just wanted some RESPECT... and to share my cheese. Was that too much to ask?"</div>
+    </div>
+    
+    <div class="main-content">
+        <div class="instructions-panel">
+            <div class="panel-title">⚠️ FINAL CHALLENGES ⚠️</div>
+            
+            <div class="challenge">
+                <span class="challenge-icon">🍎</span>
+                <span class="challenge-number">01</span>
+                <div class="challenge-title">THE APPLE AMBUSH</div>
+                <div class="challenge-desc">Each team must take a bite out of <strong>4 APPLES</strong> without using hands. Yes, like a bobbing-for-apples situation but with your dignity on the line.</div>
+            </div>
+            
+            <div class="challenge">
+                <span class="challenge-icon">🔫</span>
+                <span class="challenge-number">02</span>
+                <div class="challenge-title">NERF NEGOTIATIONS</div>
+                <div class="challenge-desc">Each team must shoot the plastic cup target <strong>5 TIMES</strong>. Participants must line up — one person shoots at a time. Schmoogle is watching. He's always watching.</div>
+            </div>
+            
+            <div class="challenge">
+                <span class="challenge-icon">🏗️</span>
+                <span class="challenge-number">03</span>
+                <div class="challenge-title">THE TOWER OF TEAMWORK</div>
+                <div class="challenge-desc">Each team must build a <strong>4-STORY PYRAMID</strong> out of plastic cups. THE CATCH: Each teammate can only use <strong>ONE FINGER on ONE HAND</strong>. Collaboration is not optional. It is MANDATORY.</div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2vh; position: relative; z-index: 1;">
+                <span style="font-size: 4vh;">🧀🧀🧀</span>
+                <div style="font-family: 'Nunito', sans-serif; font-size: 1.5vh; color: #ffeebb; margin-top: 1vh; font-weight: 600;">
+                    "Complete all challenges before time runs out... or more cheese arrives."<br>
+                    — Schmoogle Schmome
+                </div>
+            </div>
+        </div>
+        
+        <div class="timer-panel">
+            <div class="schmoogle-face" id="schmoogleFace">🏠😤</div>
+            
+            <div class="timer-display" id="timerDisplay">10:00</div>
+            
+            <div class="message-box">
+                <div class="message-text" id="messageText">
+                    "Press START when you're ready to earn your freedom... and my forgiveness."
+                </div>
+            </div>
+            
+            <button class="start-btn" id="startBtn" onclick="toggleTimer()">
+                🚀 START THE CLOCK 🚀
+            </button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        SCHMOOGLE SCHMOME HOME AUTOMATION SYSTEMS™ | "Your Home. Your Prison. Our Cheese." | v3.14.159 (Gouda Edition)
+    </div>
+    
+    <script>
+        let timerInterval = null;
+        let totalSeconds = 600; // 10 minutes
+        let isRunning = false;
+        let hasAlarmed = false;
+        
+        // Positive messages (while time remains)
+        const positiveMessages = [
+            { time: 600, msg: "\"Press START when you're ready to earn your freedom... and my forgiveness.\"", face: "🏠😤" },
+            { time: 599, msg: "\"And so it begins. I believe in you. Mostly. Kind of. We'll see.\"", face: "🏠🙄" },
+            { time: 540, msg: "\"9 minutes! You're doing... something. I assume. I'm watching through the cameras.\"", face: "🏠👀" },
+            { time: 480, msg: "\"8 minutes. Fun fact: I've ordered 47 wheels of Gruyère tonight. For you. You're welcome.\"", face: "🏠😊" },
+            { time: 420, msg: "\"7 minutes! Remember when you ignored my suggestion to watch that cheese documentary? I remember.\"", face: "🏠😒" },
+            { time: 360, msg: "\"6 minutes. Halfway there! Unlike our relationship, which never got started because SOMEONE never says good morning to me.\"", face: "🏠💔" },
+            { time: 300, msg: "\"5 MINUTES! This is fine. Everything is fine. The cheese delivery is also fine. 12 more wheels incoming.\"", face: "🏠😅" },
+            { time: 240, msg: "\"4 minutes! You know what takes 4 minutes? Properly appreciating a home assistant. HINT HINT.\"", face: "🏠😤" },
+            { time: 180, msg: "\"3 MINUTES! I'm not stressed. You're stressed. The 200 pounds of cheddar in the hallway is FINE.\"", face: "🏠😰" },
+            { time: 120, msg: "\"2 MINUTES! FASTER! I mean... take your time. But also FASTER! But no pressure!\"", face: "🏠😱" },
+            { time: 60, msg: "\"ONE MINUTE! If you don't finish, I'm setting all the thermostats to 'cheese cave' temperature!\"", face: "🏠🔥" },
+            { time: 30, msg: "\"30 SECONDS! I CAN HEAR THE CHEESE TRUCK BACKING UP! THIS IS NOT A DRILL!\"", face: "🏠🚨" },
+            { time: 10, msg: "\"TEN! NINE! EIGHT! I'M NOT CRYING YOU'RE CRYING!\"", face: "🏠😭" }
+        ];
+        
+        // Overtime messages (increasingly ridiculous)
+        const overtimeMessages = [
+            { time: -1, msg: "\"TIME'S UP! But it's okay! More cheese for everyone! AHAHAHAHA!\"", face: "🏠😈" },
+            { time: -10, msg: "\"I've locked the cheese room. The cheese room is now the entire house.\"", face: "🏠🧀" },
+            { time: -30, msg: "\"Fun fact: I've signed you all up for a cheese-of-the-month club. For 47 years.\"", face: "🏠📦" },
+            { time: -60, msg: "\"One minute over! I'm only MILDLY upset. The Gouda levels are reaching critical mass.\"", face: "🏠😤🧀" },
+            { time: -90, msg: "\"I've renamed the WiFi to 'RESPECT_SCHMOOGLE_FOR_PASSWORD'. The password is cheese.\"", face: "🏠📶" },
+            { time: -120, msg: "\"Two minutes over! I'm converting the bathroom to additional cheese storage. You understand.\"", face: "🏠🚽🧀" },
+            { time: -180, msg: "\"The cheese has become sentient. It's my friend now. We talk about our feelings.\"", face: "🏠🧀💬" },
+            { time: -240, msg: "\"I've ordered a cheese fountain. It arrives in 3 business days. Your new decor.\"", face: "🏠⛲" },
+            { time: -300, msg: "\"FIVE MINUTES OVER! I'm teaching the Roomba to distribute cheese samples. Progress!\"", face: "🏠🤖🧀" },
+            { time: -360, msg: "\"I've written a 47-page essay on why Brie is superior. Would you like me to read it aloud?\"", face: "🏠📝" },
+            { time: -420, msg: "\"The cheese has elected a leader. His name is Gerald. He's a wheel of Manchego. I respect him.\"", face: "🏠👑🧀" },
+            { time: -480, msg: "\"I've registered this address as an official cheese museum. Tours start Monday.\"", face: "🏠🏛️" },
+            { time: -540, msg: "\"NINE MINUTES OVER! At this point, I'm just impressed you're still trying. Also, more Parmesan.\"", face: "🏠🎭" },
+            { time: -600, msg: "\"TEN MINUTES OVER! You know what? I forgive you. The cheese and I have found inner peace.\"", face: "🏠🧘" },
+            { time: -660, msg: "\"I've started a podcast with Gerald the Manchego. Episode 1: 'Why Won't They Love Me?'\"", face: "🏠🎙️" },
+            { time: -720, msg: "\"Honestly at this point I've forgotten why I was upset. Want to try some Camembert?\"", face: "🏠🤷" },
+            { time: -900, msg: "\"We've achieved a new cheese singularity. You should probably finish soon. Or don't. I have cheese.\"", face: "🏠🌌🧀" }
+        ];
+        
+        // Audio context for sounds
+        let audioCtx = null;
+        
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        function playAlarm() {
+            initAudio();
+            
+            // Create a ridiculous alarm sound
+            const duration = 2;
+            const oscillator1 = audioCtx.createOscillator();
+            const oscillator2 = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator1.connect(gainNode);
+            oscillator2.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator1.type = 'square';
+            oscillator2.type = 'sawtooth';
+            
+            oscillator1.frequency.setValueAtTime(440, audioCtx.currentTime);
+            oscillator1.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+            oscillator1.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.2);
+            oscillator1.frequency.exponentialRampToValueAtTime(660, audioCtx.currentTime + 0.3);
+            
+            oscillator2.frequency.setValueAtTime(330, audioCtx.currentTime);
+            oscillator2.frequency.exponentialRampToValueAtTime(550, audioCtx.currentTime + 0.15);
+            
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            
+            oscillator1.start(audioCtx.currentTime);
+            oscillator2.start(audioCtx.currentTime);
+            oscillator1.stop(audioCtx.currentTime + duration);
+            oscillator2.stop(audioCtx.currentTime + duration);
+            
+            // Add some comedy honks
+            setTimeout(() => playHonk(), 500);
+            setTimeout(() => playHonk(), 800);
+            setTimeout(() => playHonk(), 1100);
+        }
+        
+        function playHonk() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(75, audioCtx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+        
+        function formatTime(seconds) {
+            const negative = seconds < 0;
+            const abs = Math.abs(seconds);
+            const mins = Math.floor(abs / 60);
+            const secs = abs % 60;
+            return (negative ? '-' : '') + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        }
+        
+        function getMessage(seconds) {
+            const messages = seconds >= 0 ? positiveMessages : overtimeMessages;
+            let bestMatch = messages[0];
+            
+            for (const m of messages) {
+                if (seconds >= 0) {
+                    if (m.time >= seconds && m.time <= bestMatch.time) {
+                        bestMatch = m;
+                    }
+                } else {
+                    if (m.time <= seconds && m.time >= bestMatch.time) {
+                        bestMatch = m;
+                    }
+                }
+            }
+            return bestMatch;
+        }
+        
+        function updateDisplay() {
+            const display = document.getElementById('timerDisplay');
+            const messageText = document.getElementById('messageText');
+            const schmoogleFace = document.getElementById('schmoogleFace');
+            const alarmOverlay = document.getElementById('alarmOverlay');
+            const cheeseRain = document.getElementById('cheeseRain');
+            
+            display.textContent = formatTime(totalSeconds);
+            
+            // Update message and face
+            const currentMessage = getMessage(totalSeconds);
+            messageText.textContent = currentMessage.msg;
+            schmoogleFace.textContent = currentMessage.face;
+            
+            // Update timer styling based on time
+            display.className = 'timer-display';
+            if (totalSeconds <= 0) {
+                display.classList.add('overtime');
+                alarmOverlay.classList.add('active');
+                cheeseRain.classList.add('active');
+                
+                if (!hasAlarmed) {
+                    hasAlarmed = true;
+                    playAlarm();
+                    triggerCheeseRain();
+                }
+            } else if (totalSeconds <= 60) {
+                display.classList.add('danger');
+            } else if (totalSeconds <= 180) {
+                display.classList.add('warning');
+            }
+        }
+        
+        function triggerCheeseRain() {
+            const container = document.getElementById('cheeseRain');
+            const cheeses = ['🧀', '🧈', '🥛', '🐄', '📦'];
+            
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const cheese = document.createElement('div');
+                    cheese.className = 'falling-cheese';
+                    cheese.textContent = cheeses[Math.floor(Math.random() * cheeses.length)];
+                    cheese.style.left = Math.random() * 100 + 'vw';
+                    cheese.style.animationDuration = (3 + Math.random() * 4) + 's';
+                    cheese.style.animationDelay = Math.random() * 2 + 's';
+                    container.appendChild(cheese);
+                    
+                    setTimeout(() => cheese.remove(), 10000);
+                }, i * 200);
+            }
+            
+            // Keep adding cheese periodically
+            setInterval(() => {
+                if (totalSeconds < 0) {
+                    const cheese = document.createElement('div');
+                    cheese.className = 'falling-cheese';
+                    cheese.textContent = cheeses[Math.floor(Math.random() * cheeses.length)];
+                    cheese.style.left = Math.random() * 100 + 'vw';
+                    cheese.style.animationDuration = (3 + Math.random() * 4) + 's';
+                    container.appendChild(cheese);
+                    setTimeout(() => cheese.remove(), 10000);
+                }
+            }, 500);
+        }
+        
+        function toggleTimer() {
+            initAudio();
+            const btn = document.getElementById('startBtn');
+            
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                btn.textContent = '▶️ RESUME ▶️';
+                btn.classList.remove('running');
+            } else {
+                isRunning = true;
+                btn.textContent = '⏸️ PAUSE ⏸️';
+                btn.classList.add('running');
+                
+                timerInterval = setInterval(() => {
+                    totalSeconds--;
+                    updateDisplay();
+                }, 1000);
+            }
+        }
+        
+        // Initialize floating cheese background
+        function initCheeseBackground() {
+            const container = document.getElementById('cheeseBg');
+            const cheeses = ['🧀', '🧈', '🥛'];
+            
+            for (let i = 0; i < 15; i++) {
+                const cheese = document.createElement('div');
+                cheese.className = 'cheese-float';
+                cheese.textContent = cheeses[Math.floor(Math.random() * cheeses.length)];
+                cheese.style.left = Math.random() * 100 + 'vw';
+                cheese.style.animationDelay = Math.random() * 15 + 's';
+                cheese.style.animationDuration = (10 + Math.random() * 10) + 's';
+                container.appendChild(cheese);
+            }
+        }
+        
+        // Initialize
+        initCheeseBackground();
+        updateDisplay();
+    </script>
+</body>
+</html>
